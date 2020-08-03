@@ -1,0 +1,47 @@
+version: '3'
+volumes:
+  mariadb_volume:
+
+services:
+  nginx-proxy:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./docker/nginx/certs:/etc/nginx/certs
+      - ./docker/nginx/templates:/app/templates
+      - ./docker/nginx/vhost.d:/etc/nginx/vhost.d
+
+  mariadb:
+    image: mariadb:latest
+    ports:
+      - 3306:3306
+    volumes:
+      - mariadb_volume:/var/lib/mysql
+      - ./docker/mariadb/conf:/etc/mysql/conf.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      - VIRTUAL_HOST=phpmyadmin.loc
+      - PMA_HOST=mariadb
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+
+  #  Clone this to create new php-based image
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    environment:
+      - VIRTUAL_HOST=local.host
+    volumes:
+      - ./apps/sitename/public:/var/www/public
+      - ./apps/sitename/storage:/var/www/storage # optional
+      - ./docker/apache/logs:/var/log/apache2
