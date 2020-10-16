@@ -3,6 +3,8 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/apps" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/apps/maxima-fishing" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/apps/opencart" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/apps/opencart/public" vcs="Git" />
   </component>
 </project>
