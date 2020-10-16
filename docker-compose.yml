@@ -33,6 +33,9 @@ services:
       - PMA_HOST=mariadb
       - MYSQL_USER=root
       - MYSQL_PASSWORD=root
+    depends_on:
+      - nginx-proxy
+      - mariadb
 
   #  Clone this to create new php-based image
   php:
