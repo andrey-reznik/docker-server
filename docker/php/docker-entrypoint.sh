@@ -24,12 +24,12 @@ echo "**** GOSU docker $@ ..."
 exec gosu docker "$@"
 
 
-if [[ “$originalArgOne” == docker* ]] && [ “$(id -u)” = ‘0’ ]; then
-    if [ “$originalArgOne” = ‘docker’ ];
+if [[ "$originalArgOne" == docker* ]] && [ "$(id -u)" = '0' ]; then
+    if [ "$originalArgOne" = 'docker' ];
         then chown -R docker /var/www
-    fi 
-    # make sure we can write to stdout and stderr as “docker”
-    # (for our “initdb” code later; see “ — logpath” below)
-    chown --dereference docker “/proc/$$/fd/1” “/proc/$$/fd/2” || :
-    exec gosu docker “$BASH_SOURCE” “$@”
+    fi
+    # make sure we can write to stdout and stderr as "docker"
+    # (for our "initdb" code later; see " — logpath" below)
+    chown --dereference docker "/proc/$$/fd/1" "/proc/$$/fd/2" || :
+    exec gosu docker "$BASH_SOURCE" "$@"
 fi
