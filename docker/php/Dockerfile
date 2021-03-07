@@ -53,6 +53,16 @@ RUN docker-php-ext-install pdo pdo_mysql
 # Add Xdebug config
 ADD ./docker/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
+# Install Ioncube Loader
+
+RUN echo "zend_extension = $(php-config --extension-dir)/ioncube_loader_lin_7.3.so\n/" | cat - /usr/local/etc/php/php.ini > temp\
+ && mv temp /usr/local/etc/php/php.ini
+
+RUN curl -o ioncube.tar.gz https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz \
+ && tar xzf ioncube.tar.gz \
+ && cp ioncube/ioncube_loader_lin_7.3.so `php-config --extension-dir` \
+ && rm -rf ioncube.tar.gz ioncube
+
 # Configure Apache
 RUN sed -i "s~/var/www/html~/var/www/public~g" /etc/apache2/sites-available/000-default.conf
 RUN rm -rf /var/www/html
